@@ -10,6 +10,11 @@ add.addEventListener("click", (e) => {
   let todoMonth = form.children[1].value;
   let todoDate = form.children[2].value;
 
+  if (todoText === "") {
+    alert("Please enter some text");
+    return;
+  }
+
   //create a todo
   let todo = document.createElement("div");
   todo.classList.add("todo");
@@ -49,6 +54,25 @@ add.addEventListener("click", (e) => {
   todo.appendChild(trashButton);
 
   todo.style.animation = "scaleUp 0.4s forwards";
+
+  //create an object to store information
+  let myTodo = {
+    todoText: todoText,
+    todoMonth: todoMonth,
+    todoDate: todoDate,
+  };
+
+  //store data into an array of objects
+  let myList = localStorage.getItem("list");
+  if (myList == null) {
+    localStorage.setItem("list", JSON.stringify([myTodo]));
+  } else {
+    let myListArray = JSON.parse(myList);
+    myListArray.push(myTodo);
+    localStorage.setItem("list", JSON.stringify(myListArray));
+  }
+
+  form.children[0].value = ""; //clear input text
 
   section.appendChild(todo);
 });
